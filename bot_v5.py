@@ -418,7 +418,7 @@ async def run_ladder(num_battles=1, llm_engine=None):
     """Play on the public Showdown ladder."""
     username, password = get_credentials()
 
-    if not username or not password:
+    if not username:
         print("\n  ❗ Set PS_USERNAME and PS_PASSWORD in your .env file")
         return
 
@@ -439,7 +439,8 @@ async def run_ladder(num_battles=1, llm_engine=None):
     print(f"{'='*55}\n")
     print("  Searching for opponents on the public ladder...\n")
 
-    await bot.ladder(num_battles)
+    print("  Waiting for challenges... Challenge 'francium77' on Showdown!")
+    await bot.accept_challenges("gen9randombattle", num_battles)
 
     # Print summary
     wins = bot.n_won_battles
@@ -469,8 +470,10 @@ async def run_local(num_battles=1, llm_engine=None):
         llm_engine=llm_engine,
         battle_format="gen9randombattle",
         account_configuration=bot_config,
-        server_configuration=LOCAL_SERVER,
+        server_configuration=PUBLIC_SERVER,
+        avatar=None,
     )
+
     opponent = RandomPlayer(
         battle_format="gen9randombattle",
         account_configuration=opp_config,
